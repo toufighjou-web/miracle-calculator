@@ -1484,6 +1484,9 @@ export default function App() {
       <div style={{ position: "sticky", top: 0, zIndex: 100, background: NAVY, boxShadow: "0 2px 16px rgba(0,0,0,0.15)" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto", padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 54 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <a href="https://miraclefinancial.ca" style={{ display: "flex", alignItems: "center", gap: 6, color: MUT, fontSize: 11, textDecoration: "none", marginRight: 6, padding: "4px 10px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.07)" }}>
+              ← Back to Site
+            </a>
             <div style={{ width: 36, height: 36, background: TEAL, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/>
