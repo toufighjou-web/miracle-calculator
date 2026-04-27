@@ -174,7 +174,7 @@ function CurrencyInput(props) {
 }
 
 function NumInput(props) {
-  var label = props.label, value = props.value, onChange = props.onChange, suf = props.suf, hint = props.hint, min = props.min, max = props.max, small = props.small;
+  var label = props.label, value = props.value, onChange = props.onChange, suf = props.suf, pre = props.pre, hint = props.hint, min = props.min, max = props.max, small = props.small;
   if (min === undefined) min = 0;
   if (max === undefined) max = 999;
   var focused = useState(false);
@@ -183,6 +183,7 @@ function NumInput(props) {
     <div style={{ marginBottom: small ? 10 : 14 }}>
       {label && <label style={S.lbl}>{label}</label>}
       <div style={inputWrap(f)}>
+        {pre && <span style={S.pre}>{pre}</span>}
         <input type="number" value={value} min={min} max={max}
           onChange={function(e) { onChange(Number(e.target.value)); }}
           onFocus={function() { setF(true); }} onBlur={function() { setF(false); }}
@@ -751,7 +752,7 @@ function AffordabilityTab() {
             </div>
             {dpMode === "dollar"
               ? <CurrencyInput value={dpDollar} onChange={handleDpDollar} hint={dpHintA} small={true} />
-              : <NumInput value={dpPctIn} onChange={handleDpPct} suf="%" hint={dpHintP} min={1} max={50} small={true} />
+              : <NumInput value={dpPctIn} onChange={handleDpPct} pre="%" hint={dpHintP} min={1} max={50} small={true} />
             }
           </div>
           <NumInput label="A-Lender Rate" value={aRate} onChange={setARate} suf="%" hint={"B-Lender fixed: " + fp(B_RATE, 2)} min={0.5} max={25} small={true} />
@@ -1415,10 +1416,10 @@ function IconAffordability(props) {
   var sz = props.size || 18;
   return (
     <svg width={sz} height={sz} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="9"/>
-      <path d="M12 7v1.5"/>
-      <path d="M12 15.5V17"/>
-      <path d="M9.5 9.5a2.5 2 0 015 0c0 1.5-1 2-2.5 2.5S9.5 13 9.5 14.5a2.5 2 0 005 0"/>
+      <path d="M3 9a2 2 0 012-2h14a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+      <path d="M8 7V5a2 2 0 014 0v2"/>
+      <circle cx="12" cy="13" r="2"/>
+      <path d="M12 11v-1M12 16v-1"/>
     </svg>
   );
 }
@@ -1457,11 +1458,11 @@ function IconClosing(props) {
 }
 
 var TABS = [
-  { id: "purchase", Icon: IconPurchase,     label: "Purchase" },
-  { id: "afford",   Icon: IconAffordability,label: "Affordability" },
-  { id: "debt",     Icon: IconDebt,          label: "Debt Consolidation" },
-  { id: "existing", Icon: IconRefinance,     label: "Refinance / Renewal" },
-  { id: "closing",  Icon: IconClosing,       label: "Closing Costs" },
+  { id: "purchase", Icon: IconPurchase,      label: "Purchase",            shortLabel: "Purchase" },
+  { id: "afford",   Icon: IconAffordability, label: "Affordability",       shortLabel: "Afford" },
+  { id: "debt",     Icon: IconDebt,          label: "Debt Consolidation",  shortLabel: "Debt Consol." },
+  { id: "existing", Icon: IconRefinance,     label: "Refinance / Renewal", shortLabel: "Refi / Renew" },
+  { id: "closing",  Icon: IconClosing,       label: "Closing Costs",       shortLabel: "Closing" },
 ];
 
 export default function App() {
@@ -1479,44 +1480,51 @@ export default function App() {
 
   return (
     <div style={{ minHeight: "100vh", background: BG, fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif", color: TXT, paddingBottom: 64 }}>
-      <style>{"* { box-sizing: border-box; margin: 0; padding: 0; } input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; } select { cursor: pointer; } .two-col { display: grid; grid-template-columns: 340px 1fr; gap: 24px; } @media(max-width:768px) { .two-col { grid-template-columns: 1fr !important; gap: 16px !important; } .tab-bar { overflow-x: auto; -webkit-overflow-scrolling: touch; } }"}</style>
+      <style>{"* { box-sizing: border-box; margin: 0; padding: 0; } input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; } select { cursor: pointer; } .two-col { display: grid; grid-template-columns: 340px 1fr; gap: 24px; } @media(max-width:768px) { .two-col { grid-template-columns: 1fr !important; gap: 16px !important; } } .tab-bar::-webkit-scrollbar { display: none; } .tab-bar { -ms-overflow-style: none; scrollbar-width: none; }"}</style>
 
-      <div style={{ position: "sticky", top: 0, zIndex: 100, background: NAVY, boxShadow: "0 2px 16px rgba(0,0,0,0.15)" }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto", padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 54 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <a href="https://miraclefinancial.ca" style={{ display: "flex", alignItems: "center", gap: 6, color: MUT, fontSize: 11, textDecoration: "none", marginRight: 6, padding: "4px 10px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.07)" }}>
-              ← Back to Site
-            </a>
-            <div style={{ width: 36, height: 36, background: TEAL, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/>
-                <path d="M9 21V13h6v8"/>
-              </svg>
+
+      <div style={{ background: "#fff", borderBottom: "2px solid " + BDR, position: "sticky", top: 0, zIndex: 90 }}>
+        {(function() {
+          var ROW1 = TABS.slice(0, 3);
+          var ROW2 = TABS.slice(3);
+          function TabBtn(t) {
+            var active = tab === t.id;
+            return (
+              <button key={t.id} onClick={function() { setTab(t.id); }}
+                style={{ flex: 1, padding: "11px 6px", border: "none", background: "none", cursor: "pointer",
+                  fontWeight: active ? 800 : 600, fontSize: 12, color: active ? TEAL : "#64748b",
+                  borderBottom: "3px solid " + (active ? TEAL : "transparent"),
+                  transition: "all 0.15s", display: "flex", alignItems: "center", justifyContent: "center",
+                  gap: 5, whiteSpace: "nowrap" }}>
+                <t.Icon size={14} />
+                {t.label}
+              </button>
+            );
+          }
+          return (
+            <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+              <div style={{ display: "flex", borderBottom: "1px solid " + BDR }}>
+                {ROW1.map(TabBtn)}
+              </div>
+              <div style={{ display: "flex" }}>
+                {ROW2.map(function(t) {
+                  var active = tab === t.id;
+                  return (
+                    <button key={t.id} onClick={function() { setTab(t.id); }}
+                      style={{ flex: 1, padding: "11px 6px", border: "none", background: "none", cursor: "pointer",
+                        fontWeight: active ? 800 : 600, fontSize: 12, color: active ? TEAL : "#64748b",
+                        borderBottom: "3px solid " + (active ? TEAL : "transparent"),
+                        transition: "all 0.15s", display: "flex", alignItems: "center", justifyContent: "center",
+                        gap: 5, whiteSpace: "nowrap" }}>
+                      <t.Icon size={14} />
+                      {t.label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-            <div>
-              <div style={{ fontSize: 14, fontWeight: 800, color: "#fff", letterSpacing: -0.3 }}>Miracle Financial</div>
-              <div style={{ fontSize: 9, color: TEAL, letterSpacing: 1.5, textTransform: "uppercase" }}>Mortgage Tools</div>
-            </div>
-          </div>
-          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <a href="tel:9055884242" style={{ background: "rgba(255,255,255,0.12)", color: "#fff", padding: "7px 14px", borderRadius: 8, fontSize: 12, fontWeight: 600, textDecoration: "none" }}>📞 905-588-4242</a>
-            <a href="https://miraclefinancial.ca/booking" target="_blank" rel="noreferrer" style={{ background: TEAL, color: NAVY, padding: "7px 14px", borderRadius: 8, fontSize: 12, fontWeight: 800, textDecoration: "none" }}>Get Pre-Approved →</a>
-          </div>
-        </div>
-        <div className="tab-bar" style={{ background: "#fff", borderBottom: "1px solid " + BDR }}>
-          <div style={{ maxWidth: 1000, margin: "0 auto", padding: "0 16px", display: "flex" }}>
-            {TABS.map(function(t) {
-              var active = tab === t.id;
-              return (
-                <button key={t.id} onClick={function() { setTab(t.id); }}
-                  style={{ padding: "12px 16px", border: "none", background: "none", cursor: "pointer", fontWeight: 600, whiteSpace: "nowrap", fontSize: 13, color: active ? TEAL : SUB, borderBottom: "2.5px solid " + (active ? TEAL : "transparent"), transition: "all 0.15s", display: "flex", alignItems: "center", gap: 6 }}>
-                  <t.Icon size={16} />
-                  {t.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
+          );
+        })()}
       </div>
 
       <div style={{ maxWidth: 1000, margin: "0 auto", padding: "20px 16px" }}>
@@ -1529,17 +1537,20 @@ export default function App() {
           </div>
           {renderTab()}
         </div>
-        <div style={{ background: NAVY, borderRadius: 16, padding: "16px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-          <div>
-            <div style={{ fontSize: 14, fontWeight: 700, color: "#fff" }}>Turning Dreams Into Miracles</div>
-            <div style={{ fontSize: 11, color: MUT, marginTop: 2 }}>Licensed Mortgage Broker · FSRA # 13766 · 603 Millway Ave Unit 17, Vaughan, ON</div>
-            <div style={{ fontSize: 10, color: MUT, marginTop: 1 }}>{"© " + new Date().getFullYear() + " Miracle Financial. All rights reserved."}</div>
-          </div>
-          <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
-            <a href="tel:9055884242" style={{ background: "rgba(255,255,255,0.1)", color: "#fff", padding: "8px 14px", borderRadius: 9, fontSize: 12, fontWeight: 600, textDecoration: "none" }}>📞 Call Now</a>
-            <a href="https://miraclefinancial.ca/booking" target="_blank" rel="noreferrer" style={{ background: TEAL, color: NAVY, padding: "8px 14px", borderRadius: 9, fontSize: 12, fontWeight: 800, textDecoration: "none" }}>Book Free Consult</a>
-          </div>
-        </div>
+        <div style={{ background: NAVY, borderRadius: 14, padding: "16px 20px", marginTop: 10, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
+          <a href="tel:9055884242" style={{ color: "rgba(255,255,255,0.75)", fontSize: 13, fontWeight: 600, textDecoration: "none", display: "flex", alignItems: "center", gap: 7, flexShrink: 0 }}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+            </svg>
+            905-588-4242
+          </a>
+          <a href="https://miracle-financial.mtg-app.com/signup" target="_blank" rel="noreferrer"
+            style={{ background: "#FF6B1A", color: "#fff", padding: "12px 28px", borderRadius: 10,
+              fontSize: 14, fontWeight: 800, textDecoration: "none", whiteSpace: "nowrap",
+              boxShadow: "0 4px 18px rgba(255,107,26,0.5)", letterSpacing: 0.2 }}>
+            Get Pre-Approved →
+          </a>
+        </div>            
       </div>
 
       <DisclaimerFooter />
