@@ -1,0 +1,40 @@
+name: Update Mortgage Rates
+
+on:
+  schedule:
+    - cron: '0 12 * * 1-5'   # 12:00 UTC = 8:00 AM ET, weekdays only
+  workflow_dispatch:           # Allow manual trigger from GitHub UI
+
+jobs:
+  update-rates:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+
+      - name: Fetch and update rates
+        run: python scripts/update-rates.py
+
+      - name: Commit if rates changed
+        run: |
+          git config user.name "Rates Bot"
+          git config user.email "rates@miraclefinancial.ca"
+          if git diff --quiet; then
+            echo "No rate changes today."
+          else
+            git add src/App.jsx
+            git commit -m "Auto-update: mortgage rates $(date +%Y-%m-%d)"
+            git push
+            echo "Rates updated and deployed."
+          fi
