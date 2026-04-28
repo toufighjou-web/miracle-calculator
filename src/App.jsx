@@ -33,7 +33,7 @@ var LR = {
   fixed5conv:    4.29,
   fixed3:        4.14,
   prime:         4.45,
-  stressFloor:   5.25,
+  stressFloor:   6.29,
   bPremium:      1.00,
   asOf:          _dateStr,
 };
