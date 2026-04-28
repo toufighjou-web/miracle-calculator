@@ -1500,7 +1500,7 @@ export default function App() {
           </div>
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <a href="tel:9055884242" style={{ background: "rgba(255,255,255,0.12)", color: "#fff", padding: "7px 14px", borderRadius: 8, fontSize: 12, fontWeight: 600, textDecoration: "none" }}>📞 905-588-4242</a>
-            <a href="https://miraclefinancial.ca/booking" target="_blank" rel="noreferrer" style={{ background: "#FF6B1A", color: "#fff", padding: "8px 18px", borderRadius: 9, fontSize: 12, fontWeight: 800, textDecoration: "none", boxShadow: "0 4px 14px rgba(255,107,26,0.45)" }}>Get Pre-Approved →</a>
+            <a href="https://miraclefinancial.ca/booking" target="_blank" rel="noreferrer" style={{ background: TEAL, color: NAVY, padding: "7px 14px", borderRadius: 8, fontSize: 12, fontWeight: 800, textDecoration: "none" }}>Get Pre-Approved →</a>
           </div>
         </div>
         <div className="tab-bar" style={{ background: "#fff", borderBottom: "1px solid " + BDR }}>
