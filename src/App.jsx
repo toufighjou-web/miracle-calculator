@@ -1,17 +1,16 @@
-// Build 20260428-001003
 import { useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, AreaChart, Area, XAxis, YAxis, CartesianGrid, BarChart, Bar } from "recharts";
 
 // ─── Brand ────────────────────────────────────────────────────
-var NAVY  = "#19304A";
-var TEAL  = "#00B4CC";
-var TEALX = "#E0F6FA";
-var TEALM = "#7DD4E0";
-var BG    = "#EEF2F7";
+var NAVY  = "#243B55";
+var TEAL  = "#20AABB";
+var TEALX = "#E8F7FA";
+var TEALM = "#A8DCE4";
+var BG    = "#F8FAFC";
 var CARD  = "#FFFFFF";
-var BDR   = "#CBD5E1";
-var TXT   = "#0F172A";
-var SUB   = "#475569";
+var BDR   = "#E2E8F0";
+var TXT   = "#1E293B";
+var SUB   = "#64748B";
 var MUT   = "#94A3B8";
 var GRN   = "#16A34A";
 var GRNL  = "#DCFCE7";
@@ -22,16 +21,14 @@ var AMBL  = "#FEF3C7";
 var BLU   = "#2563EB";
 var BLUL  = "#EFF6FF";
 
-var LOGO_B64 = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHZlcnNpb249IjEuMSIgd2lkdGg9IjMxNzEuNDI4NDY2Nzk2ODc1IiBoZWlnaHQ9IjI4MTguMjk5MzE2NDA2MjUiIHZpZXdCb3g9IjAgMCAzMTcxLjQyODU3MTQyODU3MTYgMjgxOC4yOTkyMDI1OTIzNTIyIj4KCQkJCgkJCTxnIHRyYW5zZm9ybT0ic2NhbGUoOC41NzE0Mjg1NzE0Mjg1NzEpIHRyYW5zbGF0ZSgxMCwgMTApIj4KCQkJCTxkZWZzIGlkPSJTdmdqc0RlZnMxMDAxIi8+PGcgaWQ9IlN2Z2pzRzEwMDciIGZlYXR1cmVLZXk9InN5bWJvbEZlYXR1cmUtMCIgdHJhbnNmb3JtPSJtYXRyaXgoOS4zNTc4NjAxMDA3MzAyMjEsMCwwLDkuMzU3ODYwMTAwNzMwMjIxLDY4LC0wLjAwMDAwNDQ2MjE3NTQxNzI5NDYwOCkiIGZpbGw9IiNmZmYiPjxkZWZzIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIvPjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggY2xhc3M9ImZpbDAiIGQ9Ik04LjU5OTMgNC4zMjQybDAgMTEuNzU5YzAuODMxNiwtMC4wNTEgMS42OTgyLC0wLjA4IDIuNTg5MiwtMC4wODQ0bC0wLjAwNDggLTkuODMzNCAtMS45NzM1IC0xLjA0NzIgLTAuMDAyOCAtMi41MTk5IDMuMDQwNSAtMi41OTgzIDAgMTYuMDA1NGMwLjEzMDEsMC4wMDIzIDAuMjU5NywwLjAwNSAwLjM4ODcsMC4wMDgzbDAgLTQuNzUwNSAxLjk1MDggLTAuOTg4NSAwIC00Ljg2MDkgMi42MTgzIDIuMjE5NyAtMC4wMDM4IDMuMzk2OCAtMS40OTQyIC0wLjg0NDYgLTAuMDQ4MiA2LjAwODFjMC42NjgzLDAuMDY0MiAxLjMwNzEsMC4xNDMxIDEuOTA5NiwwLjIzNTJsMCAtMy44MTA5IDEuMTE0OCAwLjczNDggMCAzLjI2OTZjMi4wNTYsMC40MDI2IDMuNTU1MywwLjk3MjEgNC4xNjMzLDEuNjI2MSAtNS41NjgyLC0xLjcxNzEgLTE3LjI3MywtMS43MTg5IC0yMi44NDcyLDAgMC43Mzk3LC0wLjc5NTcgMi43OTgyLC0xLjQ2NjMgNS41NzQxLC0xLjg2MzJsLTAuMDE1MyAtMTAuMTAxNyAzLjA0MDUgLTEuOTU5NXoiIHN0eWxlPSJmaWxsOiAjMjBhYWJiOyIvPjwvZz48L2c+PGcgaWQ9IlN2Z2pzRzEwMDgiIGZlYXR1cmVLZXk9ImZpQUtqSS0wIiB0cmFuc2Zvcm09Im1hdHJpeCgyLjYyNjgzODY3ODg1Mjc3OCwwLDAsMi42MjY4Mzg2Nzg4NTI3NzgsMjkuNzkzNDU1NzM1MjI3MDM4LDE3NS4xODY0MzM3MDg1NTc4NCkiIGZpbGw9IiNmZmYiPjxwYXRoIGQ9Ik03LjUyIDIwIGwtMy43IC04LjE4IGwwIDguMTggbC0yLjk4IDAgbDAgLTEzLjcgbDMuNzIgMCBsNC4wMiA5LjA2IGw0LjAyIC05LjA2IGwzLjcyIDAgbDAgMTMuNyBsLTMuMDQgMCBsMCAtOC4yMiBsLTMuNzIgOC4yMiBsLTIuMDQgMCB6IE0yNS4zOSAyMCBsLTMuMSAwIGwwIC0xMy43IGwzLjEgMCBsMCAxMy43IHogTTM2LjcyIDkuMTQgbC0yLjI4IDAgbDAgMy42NiBsMi4xOCAwIGMxLjM0IDAgMi4xNiAtMC43NiAyLjE2IC0xLjgyIHMtMC42OCAtMS44NCAtMi4wNiAtMS44NCB6IE0zNC40NCAxNS4zNCBsMCA0LjY2IGwtMy4xIDAgbDAgLTEzLjcgbDUuODQgMCBjMi45MiAwIDQuNzIgMS44OCA0LjcyIDQuNTYgYzAgMi4xNCAtMS40MiAzLjkyIC0zLjc0IDQuMzggbDQuMzYgNC43NiBsLTQuMDQgMCB6IE01NS42MyAxNC45IGwtMS43OCAtNS4zNiBsLTEuNzggNS4zNiBsMy41NiAwIHogTTU3LjMzMDAwMDAwMDAwMDAwNSAyMCBsLTAuNzggLTIuMzYgbC01LjM4IDAgbC0wLjc4IDIuMzYgbC0zLjE4IDAgbDQuODQgLTEzLjcgbDMuOCAwIGw0LjgyIDEzLjcgbC0zLjM0IDAgeiBNNzIuODQwMDAwMDAwMDAwMDIgOC45IGMtMi4zMiAwIC00LjA4IDEuODYgLTQuMDggNC4yMiBjMCAyLjQyIDEuNzYgNC4yNiA0LjE4IDQuMjYgYzEuNjggMCAyLjk2IC0wLjg4IDMuNzQgLTIuMjIgbDIuNDIgMS42OCBjLTEuMzIgMi4xNiAtMy4zNCAzLjQ0IC02LjEyIDMuNDQgYy00LjIyIDAgLTcuMzggLTMuMTQgLTcuMzggLTcuMTYgYzAgLTMuOTggMy4xNCAtNy4xIDcuMyAtNy4xIGMyLjcgMCA0Ljg0IDEuMTIgNi4xNCAzLjQyIGwtMi40NiAxLjcgYy0wLjggLTEuMzIgLTIgLTIuMjQgLTMuNzQgLTIuMjQgeiBNODQuNTkwMDAwMDAwMDAwMDIgMjAgbDAgLTEzLjcgbDMuMSAwIGwwIDEwLjg2IGw2LjM2IDAgbDAgMi44NCBsLTkuNDYgMCB6IE05OS43NjAwMDAwMDAwMDAwMiAyMCBsMCAtMTMuNyBsMTAuMDIgMCBsMCAyLjggbC02LjkyIDAgbDAgMi41OCBsNi40IDAgbDAgMi43MiBsLTYuNCAwIGwwIDIuOCBsNi45NCAwIGwwIDIuOCBsLTEwLjA0IDAgeiIvPjwvZz48ZyBpZD0iU3ZnanNHMTAwOSIgZmVhdHVyZUtleT0iZmlBS2pJLTEiIHRyYW5zZm9ybT0ibWF0cml4KDIuNjI2ODM4Njc4ODUyNzc4LDAsMCwyLjYyNjgzODY3ODg1Mjc3OCwtMi4yMDY1NDQ4OTEwNjAxMDY3LDIyMi4xODY0MzM3MDg1NTc4NCkiIGZpbGw9IiNmZmYiPjxwYXRoIGQ9Ik0xMCAxNS4xNCBsLTYuMDYgMCBsMCA0Ljg2IGwtMy4xIDAgbDAgLTEzLjcgbDkuNjggMCBsMCAyLjg0IGwtNi41OCAwIGwwIDMuMjggbDYuMDYgMCBsMCAyLjcyIHogTTE5LjI3MDAwMDAwMDAwMDAwMyAyMCBsLTMuMSAwIGwwIC0xMy43IGwzLjEgMCBsMCAxMy43IHogTTMzLjcyIDIwIGwtNS41MiAtOC42OCBsMCA4LjY4IGwtMi45OCAwIGwwIC0xMy43IGwzLjM4IDAgbDUuNTIgOC43IGwwIC04LjcgbDIuOTggMCBsMCAxMy43IGwtMy4zOCAwIHogTTUwLjc3IDE0LjkgbC0xLjc4IC01LjM2IGwtMS43OCA1LjM2IGwzLjU2IDAgeiBNNTIuNDcwMDAwMDAwMDAwMDA2IDIwIGwtMC43OCAtMi4zNiBsLTUuMzggMCBsLTAuNzggMi4zNiBsLTMuMTggMCBsNC44NCAtMTMuNyBsMy44IDAgbDQuODIgMTMuNyBsLTMuMzQgMCB6IE02OS41NiAyMCBsLTUuNTIgLTguNjggbDAgOC42OCBsLTIuOTggMCBsMCAtMTMuNyBsMy4zOCAwIGw1LjUyIDguNyBsMCAtOC43IGwyLjk4IDAgbDAgMTMuNyBsLTMuMzggMCB6IE04NS44MzAwMDAwMDAwMDAwMSA4LjkgYy0yLjMyIDAgLTQuMDggMS44NiAtNC4wOCA0LjIyIGMwIDIuNDIgMS43NiA0LjI2IDQuMTggNC4yNiBjMS42OCAwIDIuOTYgLTAuODggMy43NCAtMi4yMiBsMi40MiAxLjY4IGMtMS4zMiAyLjE2IC0zLjM0IDMuNDQgLTYuMTIgMy40NCBjLTQuMjIgMCAtNy4zOCAtMy4xNCAtNy4zOCAtNy4xNiBjMCAtMy45OCAzLjE0IC03LjEgNy4zIC03LjEgYzIuNyAwIDQuODQgMS4xMiA2LjE0IDMuNDIgbC0yLjQ2IDEuNyBjLTAuOCAtMS4zMiAtMiAtMi4yNCAtMy43NCAtMi4yNCB6IE0xMDAuNjggMjAgbC0zLjEgMCBsMCAtMTMuNyBsMy4xIDAgbDAgMTMuNyB6IE0xMTQuMzMwMDAwMDAwMDAwMDEgMTQuOSBsLTEuNzggLTUuMzYgbC0xLjc4IDUuMzYgbDMuNTYgMCB6IE0xMTYuMDMgMjAgbC0wLjc4IC0yLjM2IGwtNS4zOCAwIGwtMC43OCAyLjM2IGwtMy4xOCAwIGw0Ljg0IC0xMy43IGwzLjggMCBsNC44MiAxMy43IGwtMy4zNCAwIHogTTEyNC42MiAyMCBsMCAtMTMuNyBsMy4xIDAgbDAgMTAuODYgbDYuMzYgMCBsMCAyLjg0IGwtOS40NiAwIHoiLz48L2c+PGcgaWQ9IlN2Z2pzRzEwMTAiIGZlYXR1cmVLZXk9InNsb2dhbkZlYXR1cmUtMCIgdHJhbnNmb3JtPSJtYXRyaXgoMC44ODg5OTgxMzM4MjUzOTE3LDAsMCwwLjg4ODk5ODEzMzgyNTM5MTcsMTguNTkxMDYxMjQ4NDM1MDc1LDI5MC44NDM4MTA2NTQyNDk4KSIgZmlsbD0iI2ZmZiI+PHBhdGggZD0iTTEwLjQ0IDcuNzIwMDAwMDAwMDAwMDAxIGwtNC4wOCAwIGwwIDEyLjI4IGwtMS44IDAgbDAgLTEyLjI4IGwtNC4xIDAgbDAuMTIgLTEuNzIgbDkuNzQgMCB6IE0xMy4zMjkgMTQuNDYgbDAgLTguNDYgbDEuOCAwIGwwIDguMzIgYzAgMi43IDEuNTYgNC4wOCAzLjc2IDQuMDggczMuNzggLTEuMzggMy43OCAtNC4wOCBsMCAtOC4zMiBsMS43OCAwIGwwIDguNDYgYzAgMy42NCAtMi4wOCA1Ljc0IC01LjU2IDUuNzQgYy0zLjQ2IDAgLTUuNTYgLTIuMSAtNS41NiAtNS43NCB6IE0zOC43MzggMTEuMDYgYzAgMi4yNiAtMS4wNiA0LjIgLTMuMjQgNC44NCBsMy4wMiA0LjEgbC0yLjE2IDAgbC0yLjg2IC0zLjg4IGwtMy4xNCAwIGwwIDMuODggbC0xLjggMCBsMCAtMTQgbDUuMjggMCBjMy4zIDAgNC45IDIuMjggNC45IDUuMDYgeiBNMzAuMzU4IDcuNjggbDAgNi43NCBsMy40IDAgYzIuMjYgMCAzLjE4IC0xLjY2IDMuMTggLTMuMzYgcy0wLjkyIC0zLjM4IC0zLjE4IC0zLjM4IGwtMy40IDAgeiBNNTEuOTY3IDYgbDEuOCAwIGwwIDE0LjIgbC0wLjIyIDAgbC05LjQgLTkuOTggbDAgOS43OCBsLTEuNzggMCBsMCAtMTQuMiBsMC4yIDAgbDkuNCA5Ljk4IGwwIC05Ljc4IHogTTU3Ljk5NjAwMDAwMDAwMDAxIDIwIGwwIC0xNCBsMS44IDAgbDAgMTQgbC0xLjggMCB6IE03My42MjUgNiBsMS44IDAgbDAgMTQuMiBsLTAuMjIgMCBsLTkuNCAtOS45OCBsMCA5Ljc4IGwtMS43OCAwIGwwIC0xNC4yIGwwLjIgMCBsOS40IDkuOTggbDAgLTkuNzggeiBNOTEuMjU0IDExLjg4IGwwIDYuODYgYy0xLjA4IDAuODIgLTIuNTYgMS40NiAtNC45IDEuNDYgYy00LjQgMCAtNy4yNiAtMy4yIC03LjI2IC03LjIgczMuMDIgLTcuMiA3LjIyIC03LjIgYzEuOTQgMCAzLjU0IDAuNyA0LjggMS43IGwtMC45NCAxLjM2IGMtMS4xIC0wLjg4IC0yLjQ2IC0xLjM0IC0zLjg2IC0xLjM0IGMtMyAwIC01LjM0IDIuMjggLTUuMzQgNS40OCBzMi4xNiA1LjQ2IDUuMzggNS40NiBjMS4yMiAwIDIuMjYgLTAuMjYgMy4xIC0wLjY2IGwwIC00LjE4IGwtMi43IDAgbDAuMTIgLTEuNzQgbDQuMzggMCB6IE0xMDcuNzcyMDAwMDAwMDAwMDIgNiBjNC42NCAwIDcuMiAyLjg0IDcuMiA3IHMtMi41NiA3IC03LjIgNyBsLTQuOCAwIGwwIC0xNCBsNC44IDAgeiBNMTA3Ljg3MjAwMDAwMDAwMDAxIDE4LjI4IGMzLjQgMCA1LjMgLTIuMTIgNS4zIC01LjI4IGMwIC0zLjE4IC0xLjkgLTUuMjggLTUuMyAtNS4yOCBsLTMuMSAwIGwwIDEwLjU2IGwzLjEgMCB6IE0xMjguODQxIDExLjA2IGMwIDIuMjYgLTEuMDYgNC4yIC0zLjI0IDQuODQgbDMuMDIgNC4xIGwtMi4xNiAwIGwtMi44NiAtMy44OCBsLTMuMTQgMCBsMCAzLjg4IGwtMS44IDAgbDAgLTE0IGw1LjI4IDAgYzMuMyAwIDQuOSAyLjI4IDQuOSA1LjA2IHogTTEyMC40NjEwMDAwMDAwMDAwMSA3LjY4IGwwIDYuNzQgbDMuNCAwIGMyLjI2IDAgMy4xOCAtMS42NiAzLjE4IC0zLjM2IHMtMC45MiAtMy4zOCAtMy4xOCAtMy4zOCBsLTMuNCAwIHogTTE0MC44NyAxOC4yOCBsMC4xMiAxLjcyIGwtOC41MiAwIGwwIC0xNCBsOC4xMiAwIGwwLjE0IDEuNzIgbC02LjQ2IDAgbDAgMy40MiBsNC4zOCAwIGwwIDEuNzIgbC00LjM4IDAgbDAgNS40MiBsNi42IDAgeiBNMTUzLjYzOSAyMCBsLTEuMjIgLTIuODQgbC02LjI0IDAgbC0xLjIyIDIuODQgbC0xLjkyIDAgbDYuMTYgLTE0LjIgbDAuMiAwIGw2LjE2IDE0LjIgbC0xLjkyIDAgeiBNMTQ2Ljg5OSAxNS40OCBsNC44IDAgbC0yLjQgLTUuNTQgeiBNMTcxLjc4OCA1LjgwMDAwMDAwMDAwMDAwMSBsMC4yMiAwIGwwIDE0LjIgbC0xLjc4IDAgbDAgLTkuNDIgbC00Ljk2IDYuNDggbC0wLjEyIDAgbC00Ljk2IC02LjQ2IGwwIDkuNCBsLTEuNzggMCBsMCAtMTQuMiBsMC4yIDAgbDYuNiA4LjQgeiBNMTc1LjQ1NyAxOC41NCBjMC44OCAwLjgyIDIuNyAxLjY2IDQuNTIgMS42NiBjMi44IDAgNC41OCAtMS40NCA0LjU4IC0zLjcgYzAgLTEuODQgLTAuODggLTIuOTIgLTMuOTIgLTQuNjQgYy0yLjMyIC0xLjM0IC0yLjg4IC0xLjc4IC0yLjg4IC0yLjY2IGMwIC0wLjk0IDAuODggLTEuNjggMi4zNiAtMS42OCBjMC44NiAwIDIgMC4zOCAyLjY2IDAuOCBsMC45NiAtMS40NCBjLTAuOTQgLTAuNjIgLTIuNDIgLTEuMDggLTMuNiAtMS4wOCBjLTIuNTggMCAtNC4zIDEuNDggLTQuMyAzLjQyIGMwIDEuNzIgMC44NiAyLjU4IDMuNSA0LjAyIGMyLjM0IDEuMjggMy4zIDIuMjIgMy4zIDMuMjQgYzAgMS4yIC0xLjA0IDEuOTIgLTIuNjYgMS45MiBjLTEuNCAwIC0yLjggLTAuNjYgLTMuNSAtMS4zIHogTTE5NS42OTUgMjAgbDAgLTE0IGwxLjggMCBsMCAxNCBsLTEuOCAwIHogTTIxMS4zMjQgNiBsMS44IDAgbDAgMTQuMiBsLTAuMjIgMCBsLTkuNCAtOS45OCBsMCA5Ljc4IGwtMS43OCAwIGwwIC0xNC4yIGwwLjIgMCBsOS40IDkuOTggbDAgLTkuNzggeiBNMjI2LjA5MyA3LjcyMDAwMDAwMDAwMDAwMSBsLTQuMDggMCBsMCAxMi4yOCBsLTEuOCAwIGwwIC0xMi4yOCBsLTQuMSAwIGwwLjEyIC0xLjcyIGw5Ljc0IDAgeiBNMjM1Ljc0MiAyMC4yIGMtNCAwIC03LjE4IC0zLjIgLTcuMTggLTcuMiBzMy4xOCAtNy4yIDcuMTggLTcuMiBzNy4xOCAzLjIgNy4xOCA3LjIgcy0zLjE4IDcuMiAtNy4xOCA3LjIgeiBNMjM1Ljc0MiAxOC40OCBjMy4wNCAwIDUuMzIgLTIuMzggNS4zMiAtNS40OCBzLTIuMjggLTUuNDggLTUuMzIgLTUuNDggYy0zLjA2IDAgLTUuMzQgMi4zOCAtNS4zNCA1LjQ4IHMyLjI4IDUuNDggNS4zNCA1LjQ4IHogTTI2Ny42OCA1LjgwMDAwMDAwMDAwMDAwMSBsMC4yMiAwIGwwIDE0LjIgbC0xLjc4IDAgbDAgLTkuNDIgbC00Ljk2IDYuNDggbC0wLjEyIDAgbC00Ljk2IC02LjQ2IGwwIDkuNCBsLTEuNzggMCBsMCAtMTQuMiBsMC4yIDAgbDYuNiA4LjQgeiBNMjcyLjEyODk5OTk5OTk5OTk2IDIwIGwwIC0xNCBsMS44IDAgbDAgMTQgbC0xLjggMCB6IE0yODguMzM3OTk5OTk5OTk5OTcgMTEuMDYgYzAgMi4yNiAtMS4wNiA0LjIgLTMuMjQgNC44NCBsMy4wMiA0LjEgbC0yLjE2IDAgbC0yLjg2IC0zLjg4IGwtMy4xNCAwIGwwIDMuODggbC0xLjggMCBsMCAtMTQgbDUuMjggMCBjMy4zIDAgNC45IDIuMjggNC45IDUuMDYgeiBNMjc5Ljk1Nzk5OTk5OTk5OTk3IDcuNjggbDAgNi43NCBsMy40IDAgYzIuMjYgMCAzLjE4IC0xLjY2IDMuMTggLTMuMzYgcy0wLjkyIC0zLjM4IC0zLjE4IC0zLjM4IGwtMy40IDAgeiBNMzAxLjE2NyAyMCBsLTEuMjIgLTIuODQgbC02LjI0IDAgbC0xLjIyIDIuODQgbC0xLjkyIDAgbDYuMTYgLTE0LjIgbDAuMiAwIGw2LjE2IDE0LjIgbC0xLjkyIDAgeiBNMjk0LjQyNyAxNS40OCBsNC44IDAgbC0yLjQgLTUuNTQgeiBNMzA1LjM3NiAxMyBjMCAtNC4wNCAzLjE4IC03LjIgNy4xOCAtNy4yIGMxLjY4IDAgMy4yOCAwLjU2IDQuNyAxLjY0IGwtMC45IDEuNCBjLTEuMTggLTAuOSAtMi40IC0xLjM0IC0zLjggLTEuMzQgYy0zLjAyIDAgLTUuMzggMi40MiAtNS4zOCA1LjUgczIuMzggNS41IDUuMzggNS41IGMxLjUyIDAgMi44MiAtMC40OCAzLjggLTEuNDIgbDAuOTIgMS4zOCBjLTEuMjIgMS4xIC0yLjk0IDEuNzQgLTQuNzIgMS43NCBjLTQgMCAtNy4xOCAtMy4xOCAtNy4xOCAtNy4yIHogTTMyMi41MjUgMTguMjggbDUuOTIgMCBsLTAuMTIgMS43MiBsLTcuNiAwIGwwIC0xNCBsMS44IDAgbDAgMTIuMjggeiBNMzM5Ljg3NCAxOC4yOCBsMC4xMiAxLjcyIGwtOC41MiAwIGwwIC0xNCBsOC4xMiAwIGwwLjE0IDEuNzIgbC02LjQ2IDAgbDAgMy40MiBsNC4zOCAwIGwwIDEuNzIgbC00LjM4IDAgbDAgNS40MiBsNi42IDAgeiBNMzQyLjY2MyAxOC41NCBjMC44OCAwLjgyIDIuNyAxLjY2IDQuNTIgMS42NiBjMi44IDAgNC41OCAtMS40NCA0LjU4IC0zLjcgYzAgLTEuODQgLTAuODggLTIuOTIgLTMuOTIgLTQuNjQgYy0yLjMyIC0xLjM0IC0yLjg4IC0xLjc4IC0yLjg4IC0yLjY2IGMwIC0wLjk0IDAuODggLTEuNjggMi4zNiAtMS42OCBjMC44NiAwIDIgMC4zOCAyLjY2IDAuOCBsMC45NiAtMS40NCBjLTAuOTQgLTAuNjIgLTIuNDIgLTEuMDggLTMuNiAtMS4wOCBjLTIuNTggMCAtNC4zIDEuNDggLTQuMyAzLjQyIGMwIDEuNzIgMC44NiAyLjU4IDMuNSA0LjAyIGMyLjM0IDEuMjggMy4zIDIuMjIgMy4zIDMuMjQgYzAgMS4yIC0xLjA0IDEuOTIgLTIuNjYgMS45MiBjLTEuNCAwIC0yLjggLTAuNjYgLTMuNSAtMS4zIHoiLz48L2c+CgkJCTwvZz4KCQk8L3N2Zz4=";
-
 // ─── Live Rates (auto-updates date daily) ─────────────────────
 var _today = new Date();
 var _dateStr = _today.toLocaleDateString("en-CA", { month: "long", day: "numeric", year: "numeric" });
 var LR = {
   variable5:     3.35,
   fixed5insured: 4.04,
-  fixed5conv:    4.29,
-  fixed3:        4.14,
+  fixed5conv:    3.99,
+  fixed3:        3.84,
   prime:         4.45,
   stressFloor:   5.25,
   bPremium:      1.00,
@@ -177,7 +174,7 @@ function CurrencyInput(props) {
 }
 
 function NumInput(props) {
-  var label = props.label, value = props.value, onChange = props.onChange, suf = props.suf, pre = props.pre, hint = props.hint, min = props.min, max = props.max, small = props.small;
+  var label = props.label, value = props.value, onChange = props.onChange, suf = props.suf, hint = props.hint, min = props.min, max = props.max, small = props.small;
   if (min === undefined) min = 0;
   if (max === undefined) max = 999;
   var focused = useState(false);
@@ -186,7 +183,6 @@ function NumInput(props) {
     <div style={{ marginBottom: small ? 10 : 14 }}>
       {label && <label style={S.lbl}>{label}</label>}
       <div style={inputWrap(f)}>
-        {pre && <span style={S.pre}>{pre}</span>}
         <input type="number" value={value} min={min} max={max}
           onChange={function(e) { onChange(Number(e.target.value)); }}
           onFocus={function() { setF(true); }} onBlur={function() { setF(false); }}
@@ -258,7 +254,7 @@ function Row(props) {
 
 function Card(props) {
   return (
-    <div style={{ background: CARD, borderRadius: 14, padding: "6px 16px 8px", marginBottom: props.mb !== undefined ? props.mb : 14, border: "1px solid " + BDR, boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }}>
+    <div style={{ background: CARD, borderRadius: 14, padding: "6px 16px 8px", marginBottom: props.mb !== undefined ? props.mb : 14, border: "1px solid " + BDR }}>
       {props.children}
     </div>
   );
@@ -351,42 +347,41 @@ function RatioMeter(props) {
 // ─── Rates Banner ──────────────────────────────────────────────
 function RatesBanner(props) {
   var onSelect = props.onSelect, hideBLender = props.hideBLender;
-  var activeRateS = useState(LR.variable5);
-  var activeRate = activeRateS[0], setActiveRate = activeRateS[1];
   var rates = [
-    { l: "5yr Variable", v: LR.variable5, tag: "Lowest", tagColor: "#FF6B1A" },
-    { l: "5yr Fixed", v: LR.fixed5conv },
-    { l: "5yr Fixed (Insured)", v: LR.fixed5insured, tag: "Popular", tagColor: TEAL },
-    { l: "Prime Rate", v: LR.prime, noClick: true },
+    { l: "5yr Variable", v: LR.variable5, tag: "Lowest" },
+    { l: "5yr Fixed (Insured)", v: LR.fixed5insured, tag: "Popular" },
+    { l: "5yr Fixed (Conv.)", v: LR.fixed5conv },
+    { l: "3yr Fixed", v: LR.fixed3 },
   ];
-  if (!hideBLender) rates.push({ l: "B-Lender Fixed", v: B_RATE, amber: true });
   return (
-    <div style={{ background: "#fff", border: "1px solid " + BDR, borderRadius: 14, padding: "12px 16px", marginBottom: 16, boxShadow: "0 2px 10px rgba(0,0,0,0.05)" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-        <span style={{ fontSize: 11, fontWeight: 700, color: TXT }}>Today's Rates</span>
-        <span style={{ fontSize: 10, color: MUT }}>{"Rates as of " + LR.asOf}</span>
+    <div style={{ background: TEALX, border: "1px solid " + TEALM, borderRadius: 14, padding: "12px 16px", marginBottom: 18 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10, flexWrap: "wrap", gap: 4 }}>
+        <span style={{ fontSize: 11, fontWeight: 700, color: TEAL, textTransform: "uppercase", letterSpacing: 0.8 }}>📊 Today's Rates</span>
+        <span style={{ fontSize: 10, color: MUT }}>{"Rates as of " + LR.asOf + " — tap to apply"}</span>
       </div>
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
         {rates.map(function(r) {
-          var isActive = activeRate === r.v && !r.noClick;
           return (
-            <button key={r.l} onClick={r.noClick ? undefined : function() { setActiveRate(r.v); onSelect(r.v); }}
-              style={{ flex: 1, minWidth: 80, padding: "10px 12px", borderRadius: 10, textAlign: "center",
-                border: "2px solid " + (isActive ? TEAL : (r.amber ? AMB + "50" : BDR)),
-                background: isActive ? TEALX : (r.amber ? AMBL : "#fff"),
-                cursor: r.noClick ? "default" : "pointer", transition: "all 0.15s" }}>
-              <div style={{ fontSize: 18, fontWeight: 900, color: r.amber ? AMB : r.noClick ? SUB : (isActive ? TEAL : TXT), letterSpacing: -0.5 }}>{fp(r.v, 2)}</div>
-              <div style={{ fontSize: 9, color: r.noClick ? MUT : (isActive ? TEAL : SUB), fontWeight: 600, marginTop: 2, display: "flex", alignItems: "center", justifyContent: "center", gap: 4 }}>
+            <button key={r.l} onClick={function() { onSelect(r.v); }}
+              style={{ padding: "8px 14px", borderRadius: 10, border: "1.5px solid " + TEALM, background: "#fff", cursor: "pointer", textAlign: "left" }}>
+              <div style={{ fontSize: 10, color: SUB, fontWeight: 600 }}>
                 {r.l}
-                {r.tag && <span style={{ background: r.tagColor || TEAL, color: "#fff", borderRadius: 4, padding: "1px 5px", fontSize: 8, fontWeight: 700 }}>{r.tag}</span>}
+                {r.tag && <span style={{ marginLeft: 5, background: TEAL, color: "#fff", borderRadius: 4, padding: "1px 5px", fontSize: 9 }}>{r.tag}</span>}
               </div>
+              <div style={{ fontSize: 16, fontWeight: 800, color: TEAL }}>{fp(r.v, 2)}</div>
             </button>
           );
         })}
-        <a href="https://miraclefinancial.ca/rates" target="_blank" rel="noreferrer"
-          style={{ display: "flex", alignItems: "center", fontSize: 10, color: TEAL, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap", paddingLeft: 4 }}>
-          View All Rates ›
-        </a>
+        <div style={{ padding: "8px 14px", borderRadius: 10, border: "1px solid " + BDR, background: "#fff" }}>
+          <div style={{ fontSize: 10, color: SUB, fontWeight: 600 }}>Prime Rate</div>
+          <div style={{ fontSize: 16, fontWeight: 800, color: SUB }}>{fp(LR.prime, 2)}</div>
+        </div>
+        {!hideBLender && (
+          <div style={{ padding: "8px 14px", borderRadius: 10, border: "1px solid " + AMB + "50", background: AMBL }}>
+            <div style={{ fontSize: 10, color: AMB, fontWeight: 700 }}>B-Lender Fixed</div>
+            <div style={{ fontSize: 16, fontWeight: 800, color: AMB }}>{fp(B_RATE, 2)}</div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -574,42 +569,10 @@ function PurchaseTab() {
           </div>
         </div>
         <div>
-          <div style={{ background: "linear-gradient(145deg, #0F1E2E 0%, #19304A 100%)", borderRadius: 18, padding: "22px 20px 18px", boxShadow: "0 8px 32px rgba(15,30,46,0.35)", marginBottom: 14, textAlign: "center" }}>
-            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.45)", textTransform: "uppercase", letterSpacing: 1.2, fontWeight: 600, marginBottom: 8 }}>{heroLabel}</div>
-            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 6, lineHeight: 1 }}>
-              <div style={{ fontSize: 62, fontWeight: 900, color: "#fff", letterSpacing: -3 }}>{fd(pmtVal)}</div>
-              <div style={{ fontSize: 16, color: "rgba(255,255,255,0.5)", fontWeight: 600, paddingBottom: 8 }}>/ mo</div>
-            </div>
-            <div style={{ fontSize: 11, marginTop: 6, marginBottom: 16 }}>
-              <span style={{ color: TEAL, fontWeight: 700 }}>{"Based on " + fp(rate, 2) + " rate"}</span>
-              <span style={{ color: "rgba(255,255,255,0.4)" }}>{" · " + am + "-year amortization"}</span>
-            </div>
-            <a href="https://miracle-financial.mtg-app.com/signup" target="_blank" rel="noreferrer"
-              style={{ display: "block", background: "#FF6B1A", color: "#fff", padding: "13px 20px", borderRadius: 12,
-                fontSize: 14, fontWeight: 800, textDecoration: "none", boxShadow: "0 4px 18px rgba(255,107,26,0.45)",
-                letterSpacing: -0.2 }}>
-              Get Pre-Approved for This Amount →
-            </a>
-            <div style={{ display: "flex", justifyContent: "center", gap: 20, marginTop: 14 }}>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                <div style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={TEAL} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                </div>
-                <span style={{ fontSize: 9, color: "rgba(255,255,255,0.5)", fontWeight: 600, textAlign: "center" }}>No Credit Impact</span>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                <div style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={TEAL} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                </div>
-                <span style={{ fontSize: 9, color: "rgba(255,255,255,0.5)", fontWeight: 600, textAlign: "center" }}>2-Minute Approval</span>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                <div style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={TEAL} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
-                </div>
-                <span style={{ fontSize: 9, color: "rgba(255,255,255,0.5)", fontWeight: 600, textAlign: "center" }}>Licensed Broker</span>
-              </div>
-            </div>
+          <div style={{ background: NAVY, borderRadius: 18, padding: "22px 20px", marginBottom: 14, textAlign: "center" }}>
+            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.45)", textTransform: "uppercase", letterSpacing: 1.2, fontWeight: 600, marginBottom: 6 }}>{heroLabel}</div>
+            <div style={{ fontSize: 44, fontWeight: 800, color: "#fff", letterSpacing: -2, lineHeight: 1 }}>{fd(pmtVal)}</div>
+            <div style={{ fontSize: 12, color: TEAL, marginTop: 8 }}>{rateInfo}</div>
           </div>
           <Card>
             <Row label="Purchase Price" value={fd(safePrice)} />
@@ -788,7 +751,7 @@ function AffordabilityTab() {
             </div>
             {dpMode === "dollar"
               ? <CurrencyInput value={dpDollar} onChange={handleDpDollar} hint={dpHintA} small={true} />
-              : <NumInput value={dpPctIn} onChange={handleDpPct} pre="%" hint={dpHintP} min={1} max={50} small={true} />
+              : <NumInput value={dpPctIn} onChange={handleDpPct} suf="%" hint={dpHintP} min={1} max={50} small={true} />
             }
           </div>
           <NumInput label="A-Lender Rate" value={aRate} onChange={setARate} suf="%" hint={"B-Lender fixed: " + fp(B_RATE, 2)} min={0.5} max={25} small={true} />
@@ -1452,10 +1415,10 @@ function IconAffordability(props) {
   var sz = props.size || 18;
   return (
     <svg width={sz} height={sz} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3 9a2 2 0 012-2h14a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-      <path d="M8 7V5a2 2 0 014 0v2"/>
-      <circle cx="12" cy="13" r="2"/>
-      <path d="M12 11v-1M12 16v-1"/>
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M12 7v1.5"/>
+      <path d="M12 15.5V17"/>
+      <path d="M9.5 9.5a2.5 2 0 015 0c0 1.5-1 2-2.5 2.5S9.5 13 9.5 14.5a2.5 2 0 005 0"/>
     </svg>
   );
 }
@@ -1494,11 +1457,11 @@ function IconClosing(props) {
 }
 
 var TABS = [
-  { id: "purchase", Icon: IconPurchase,      label: "Purchase",            shortLabel: "Purchase" },
-  { id: "afford",   Icon: IconAffordability, label: "Affordability",       shortLabel: "Afford" },
-  { id: "debt",     Icon: IconDebt,          label: "Debt Consolidation",  shortLabel: "Debt Consol." },
-  { id: "existing", Icon: IconRefinance,     label: "Refinance / Renewal", shortLabel: "Refi / Renew" },
-  { id: "closing",  Icon: IconClosing,       label: "Closing Costs",       shortLabel: "Closing" },
+  { id: "purchase", Icon: IconPurchase,     label: "Purchase" },
+  { id: "afford",   Icon: IconAffordability,label: "Affordability" },
+  { id: "debt",     Icon: IconDebt,          label: "Debt Consolidation" },
+  { id: "existing", Icon: IconRefinance,     label: "Refinance / Renewal" },
+  { id: "closing",  Icon: IconClosing,       label: "Closing Costs" },
 ];
 
 export default function App() {
@@ -1516,76 +1479,47 @@ export default function App() {
 
   return (
     <div style={{ minHeight: "100vh", background: BG, fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif", color: TXT, paddingBottom: 64 }}>
-      <style>{"* { box-sizing: border-box; margin: 0; padding: 0; } input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; } select { cursor: pointer; } .two-col { display: grid; grid-template-columns: 340px 1fr; gap: 24px; } @media(max-width:768px) { .two-col { grid-template-columns: 1fr !important; gap: 16px !important; } .hide-mobile { display: none !important; } } .tab-bar::-webkit-scrollbar { display: none; } .tab-bar { -ms-overflow-style: none; scrollbar-width: none; }"}</style>
+      <style>{"* { box-sizing: border-box; margin: 0; padding: 0; } input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; } select { cursor: pointer; } .two-col { display: grid; grid-template-columns: 340px 1fr; gap: 24px; } @media(max-width:768px) { .two-col { grid-template-columns: 1fr !important; gap: 16px !important; } .tab-bar { overflow-x: auto; -webkit-overflow-scrolling: touch; } }"}</style>
 
-
-      <div style={{ position: "sticky", top: 0, zIndex: 100, background: NAVY, boxShadow: "0 2px 20px rgba(15,30,46,0.4)" }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto", padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 72 }}>
+      <div style={{ position: "sticky", top: 0, zIndex: 100, background: NAVY, boxShadow: "0 2px 16px rgba(0,0,0,0.15)" }}>
+        <div style={{ maxWidth: 1000, margin: "0 auto", padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 54 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <a href="https://miraclefinancial.ca" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
-              <img src={LOGO_B64} alt="Miracle Financial" style={{ height: 56, width: "auto", display: "block" }}/>
+            <a href="https://miraclefinancial.ca" style={{ display: "flex", alignItems: "center", gap: 6, color: MUT, fontSize: 11, textDecoration: "none", marginRight: 6, padding: "4px 10px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.07)" }}>
+              ← Back to Site
             </a>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <a href="tel:9055884242" className="hide-mobile" style={{ display: "flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.1)", color: "#fff", padding: "8px 14px", borderRadius: 8, fontSize: 12, fontWeight: 600, textDecoration: "none" }}>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+            <div style={{ width: 36, height: 36, background: TEAL, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/>
+                <path d="M9 21V13h6v8"/>
               </svg>
-              905-588-4242
-            </a>
-            <a href="https://miracle-financial.mtg-app.com/signup" target="_blank" rel="noreferrer"
-              style={{ background: "#FF6B1A", color: "#fff", padding: "8px 16px", borderRadius: 8, fontSize: 12, fontWeight: 800, textDecoration: "none", boxShadow: "0 4px 14px rgba(255,107,26,0.5)", whiteSpace: "nowrap" }}>
-              Get Pre-Approved →
-            </a>
+            </div>
+            <div>
+              <div style={{ fontSize: 14, fontWeight: 800, color: "#fff", letterSpacing: -0.3 }}>Miracle Financial</div>
+              <div style={{ fontSize: 9, color: TEAL, letterSpacing: 1.5, textTransform: "uppercase" }}>Mortgage Tools</div>
+            </div>
+          </div>
+          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            <a href="tel:9055884242" style={{ background: "rgba(255,255,255,0.12)", color: "#fff", padding: "7px 14px", borderRadius: 8, fontSize: 12, fontWeight: 600, textDecoration: "none" }}>📞 905-588-4242</a>
+            <a href="https://miraclefinancial.ca/booking" target="_blank" rel="noreferrer" style={{ background: TEAL, color: NAVY, padding: "7px 14px", borderRadius: 8, fontSize: 12, fontWeight: 800, textDecoration: "none" }}>Get Pre-Approved →</a>
+          </div>
+        </div>
+        <div className="tab-bar" style={{ background: "#fff", borderBottom: "1px solid " + BDR }}>
+          <div style={{ maxWidth: 1000, margin: "0 auto", padding: "0 16px", display: "flex" }}>
+            {TABS.map(function(t) {
+              var active = tab === t.id;
+              return (
+                <button key={t.id} onClick={function() { setTab(t.id); }}
+                  style={{ padding: "12px 16px", border: "none", background: "none", cursor: "pointer", fontWeight: 600, whiteSpace: "nowrap", fontSize: 13, color: active ? TEAL : SUB, borderBottom: "2.5px solid " + (active ? TEAL : "transparent"), transition: "all 0.15s", display: "flex", alignItems: "center", gap: 6 }}>
+                  <t.Icon size={16} />
+                  {t.label}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
 
-      <div style={{ background: "#fff", borderBottom: "2px solid " + BDR, position: "sticky", top: 72, zIndex: 90 }}>
-        {(function() {
-          var ROW1 = TABS.slice(0, 3);
-          var ROW2 = TABS.slice(3);
-          function TabBtn(t) {
-            var active = tab === t.id;
-            return (
-              <button key={t.id} onClick={function() { setTab(t.id); }}
-                style={{ flex: 1, padding: "11px 6px", border: "none", background: "none", cursor: "pointer",
-                  fontWeight: active ? 800 : 600, fontSize: 12, color: active ? TEAL : "#64748b",
-                  borderBottom: "3px solid " + (active ? TEAL : "transparent"), background: active ? "rgba(0,180,204,0.06)" : "none",
-                  transition: "all 0.15s", display: "flex", alignItems: "center", justifyContent: "center",
-                  gap: 5, whiteSpace: "nowrap" }}>
-                <t.Icon size={14} />
-                {t.label}
-              </button>
-            );
-          }
-          return (
-            <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-              <div style={{ display: "flex", borderBottom: "1px solid " + BDR }}>
-                {ROW1.map(TabBtn)}
-              </div>
-              <div style={{ display: "flex" }}>
-                {ROW2.map(function(t) {
-                  var active = tab === t.id;
-                  return (
-                    <button key={t.id} onClick={function() { setTab(t.id); }}
-                      style={{ flex: 1, padding: "11px 6px", border: "none", background: "none", cursor: "pointer",
-                        fontWeight: active ? 800 : 600, fontSize: 12, color: active ? TEAL : "#64748b",
-                        borderBottom: "3px solid " + (active ? TEAL : "transparent"), background: active ? "rgba(0,180,204,0.06)" : "none",
-                        transition: "all 0.15s", display: "flex", alignItems: "center", justifyContent: "center",
-                        gap: 5, whiteSpace: "nowrap" }}>
-                      <t.Icon size={14} />
-                      {t.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })()}
-      </div>
-
-      <div style={{ maxWidth: 1000, margin: "0 auto", padding: "20px 16px", minHeight: "calc(100vh - 130px)" }}>
+      <div style={{ maxWidth: 1000, margin: "0 auto", padding: "20px 16px" }}>
         <div style={{ background: CARD, borderRadius: 20, padding: "22px 22px 28px", boxShadow: "0 1px 3px rgba(0,0,0,0.03),0 4px 16px rgba(0,0,0,0.05)", marginBottom: 14 }}>
           <div style={{ marginBottom: 18, paddingBottom: 14, borderBottom: "1px solid " + BG }}>
             <h2 style={{ fontSize: 17, fontWeight: 800, color: TXT, letterSpacing: -0.4, display: "flex", alignItems: "center", gap: 8 }}>
@@ -1595,35 +1529,17 @@ export default function App() {
           </div>
           {renderTab()}
         </div>
-        <div style={{ background: NAVY, borderRadius: 16, overflow: "hidden", marginTop: 10 }}>
-          <div style={{ padding: "28px 24px 20px", display: "flex", flexWrap: "wrap", gap: 16, alignItems: "center", justifyContent: "space-between" }}>
-            <div>
-              <img src={LOGO_B64} alt="Miracle Financial" style={{ height: 48, width: "auto", display: "block", marginBottom: 8 }}/>
-              <div style={{ fontSize: 10, color: TEAL, letterSpacing: 1.2, textTransform: "uppercase" }}>Turning Dreams Into Miracles</div>
-            </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "flex-end" }}>
-              {[
-                { icon: "🏛️", label: "Licensed Broker", sub: "FSRA # 13766" },
-                { icon: "👥", label: "1000+ Clients", sub: "Helped" },
-                { icon: "⭐", label: "5-Star Rated", sub: "Google Reviews" },
-                { icon: "📍", label: "Vaughan, ON", sub: "& Across Canada" },
-              ].map(function(b) {
-                return (
-                  <div key={b.label} style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.07)", borderRadius: 10, padding: "8px 14px" }}>
-                    <span style={{ fontSize: 18 }}>{b.icon}</span>
-                    <div>
-                      <div style={{ fontSize: 11, fontWeight: 700, color: "#fff" }}>{b.label}</div>
-                      <div style={{ fontSize: 10, color: "rgba(255,255,255,0.5)" }}>{b.sub}</div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+        <div style={{ background: NAVY, borderRadius: 16, padding: "16px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+          <div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: "#fff" }}>Turning Dreams Into Miracles</div>
+            <div style={{ fontSize: 11, color: MUT, marginTop: 2 }}>Licensed Mortgage Broker · FSRA # 13766 · 603 Millway Ave Unit 17, Vaughan, ON</div>
+            <div style={{ fontSize: 10, color: MUT, marginTop: 1 }}>{"© " + new Date().getFullYear() + " Miracle Financial. All rights reserved."}</div>
           </div>
-          <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", padding: "10px 24px", textAlign: "center" }}>
-            <span style={{ fontSize: 10, color: "rgba(255,255,255,0.3)" }}>{"© " + new Date().getFullYear() + " Miracle Financial. All rights reserved. · 603 Millway Ave Unit 17, Vaughan, ON"}</span>
+          <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
+            <a href="tel:9055884242" style={{ background: "rgba(255,255,255,0.1)", color: "#fff", padding: "8px 14px", borderRadius: 9, fontSize: 12, fontWeight: 600, textDecoration: "none" }}>📞 Call Now</a>
+            <a href="https://miraclefinancial.ca/booking" target="_blank" rel="noreferrer" style={{ background: TEAL, color: NAVY, padding: "8px 14px", borderRadius: 9, fontSize: 12, fontWeight: 800, textDecoration: "none" }}>Book Free Consult</a>
           </div>
-        </div>            
+        </div>
       </div>
 
       <DisclaimerFooter />
