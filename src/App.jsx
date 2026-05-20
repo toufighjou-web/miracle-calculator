@@ -29,11 +29,11 @@ var _today = new Date();
 var _dateStr = _today.toLocaleDateString("en-CA", { month: "long", day: "numeric", year: "numeric" });
 var LR = {
   variable5:     3.35,
-  fixed5insured: 4.04,
-  fixed5conv:    4.29,
+  fixed5insured: 4.09,
+  fixed5conv:    4.34,
   fixed3:        4.14,
   prime:         4.45,
-  stressFloor:   6.29,
+  stressFloor:   6.34,
   bPremium:      1.00,
   asOf:          _dateStr,
 };
