@@ -28,7 +28,7 @@ var LOGO_B64 = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb2
 var _today = new Date();
 var _dateStr = _today.toLocaleDateString("en-CA", { month: "long", day: "numeric", year: "numeric" });
 var LR = {
-  variable5:     3.4,
+  variable5:     3.35,
   fixed5insured: 4.04,
   fixed5conv:    4.29,
   fixed3:        3.89,
