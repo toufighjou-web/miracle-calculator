@@ -31,7 +31,7 @@ var LR = {
   variable5:     3.35,
   fixed5insured: 4.09,
   fixed5conv:    4.34,
-  fixed3:        3.89,
+  fixed3:        3.94,
   prime:         4.45,
   stressFloor:   6.34,
   bPremium:      1.00,
