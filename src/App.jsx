@@ -28,12 +28,12 @@ var LOGO_B64 = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb2
 var _today = new Date();
 var _dateStr = _today.toLocaleDateString("en-CA", { month: "long", day: "numeric", year: "numeric" });
 var LR = {
-  variable5:     3.43,
-  fixed5insured: 4.34,
-  fixed5conv:    4.59,
+  variable5:     3.69,
+  fixed5insured: 4.44,
+  fixed5conv:    4.69,
   fixed3:        4.34,
   prime:         4.45,
-  stressFloor:   6.59,
+  stressFloor:   6.69,
   bPremium:      1.00,
   asOf:          _dateStr,
 };
